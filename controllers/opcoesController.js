@@ -72,10 +72,21 @@ const getOpcao = async(req, res) => {
     }
 }
 
+const getOpcaoByEnquete = async(req, res) => {
+    const opcao = new Opcao();
+    const opcoes = await opcao.findByEnquete(req.params.id);
+
+    if (opcoes.length == 0) {
+        return res.status(400).json({ "message": `opcao ID ${req.params.id} not found` });
+    }
+    res.json(opcoes);
+    
+}
 module.exports = {
     getAllOpcoes,
     createOpcao,
     updateOpcao,
     deleteOpcao,
-    getOpcao
+    getOpcao,
+    getOpcaoByEnquete
 }

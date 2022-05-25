@@ -57,5 +57,8 @@ class Opcao {
         }
         return this;
     }
+    async findByEnquete(id_enquete){
+        return await mysql.executeQuery("SELECT * FROM opcao WHERE id_enquete = ?", [id_enquete])
+    }
 }
 module.exports = { Opcao };
