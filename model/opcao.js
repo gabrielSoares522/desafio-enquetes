@@ -2,22 +2,22 @@ const { th } = require('date-fns/locale');
 const mysql = require('./mysql.js');
 
 
-class Enquete {
+class Opcao {
     constructor(){
-        this.id=null;
-        this.titulo = "";
-        this.dt_inicio = "";
-        this.dt_fim = "";
+        this.id = null;
+        this.id_enquete = null;
+        this.resposta = "";
+        this.qt_votos = 0;
     }
 
     async getAll() {
-        return await mysql.executeQuery("SELECT * FROM enquete")
+        return await mysql.executeQuery("SELECT * FROM opcao")
     }
 
     async save(){
         let result = "";
         try{ 
-            result = await mysql.executeQuery("INSERT INTO enquete (titulo, dt_inicio, dt_fim) VALUES (?, ?, ?)", [this.titulo, this.dt_inicio, this.dt_fim])
+            result = await mysql.executeQuery("INSERT INTO opcao (id_enquete, resposta, qt_votos) VALUES (?, ?, ?)", [this.id_enquete, this.resposta, 0])
         } catch(err){
             console.log("Erro ao salvar enquete: " + err);
             throw err;
@@ -27,19 +27,19 @@ class Enquete {
     }
 
     async findById(id){
-        let result = await mysql.executeQuery("SELECT * FROM enquete WHERE id = ?", [id])
+        let result = await mysql.executeQuery("SELECT * FROM opcao WHERE id = ?", [id])
         if(result.length > 0){
             this.id = result[0].id;
-            this.titulo = result[0].titulo;
-            this.dt_inicio = result[0].dt_inicio;
-            this.dt_fim = result[0].dt_fim;
+            this.id_enquete = result[0].id_enquete;
+            this.resposta = result[0].resposta;
+            this.qt_votos = result[0].qt_votos;
             return this;
         }
     }
     async update(){
         let result = "";
         try{
-            result = await mysql.executeQuery("UPDATE enquete SET titulo = ?, dt_inicio = ?, dt_fim = ? WHERE id = ?", [this.titulo, this.dt_inicio, this.dt_fim, this.id])
+            result = await mysql.executeQuery("UPDATE opcao SET id_enquete = ?, resposta = ?, qt_votos = ? WHERE id = ?", [this.id_enquete, this.resposta, this.qt_votos, this.id])
         } catch(err){
             console.log("Erro ao atualizar enquete: " + err);
             throw err;
@@ -50,7 +50,7 @@ class Enquete {
     async delete(){
         let result = "";
         try{
-            result = await mysql.executeQuery("DELETE FROM enquete WHERE id = ?", [this.id])
+            result = await mysql.executeQuery("DELETE FROM opcao WHERE id = ?", [this.id])
         } catch(err){
             console.log("Erro ao deletar enquete: " + err);
             throw err;
@@ -58,4 +58,4 @@ class Enquete {
         return this;
     }
 }
-module.exports = { Enquete };
+module.exports = { Opcao };
