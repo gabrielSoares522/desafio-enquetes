@@ -11,4 +11,7 @@ router.route("/")
 router.route("/:id")
     .get(opcoesController.getOpcao)
 
+router.route("/byEnquete/:id")
+    .get(opcoesController.getOpcaoByEnquete)
+    
 module.exports = router;

@@ -5,8 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desafio Enquete</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1>Desafio Enquete</h1>
+    <div id="container">
+        <h1>Desafio Enquete</h1>
+
+        <div id="lista-enquetes"></div>
+
+        <button id="btn-nova-enquete" onclick="mostrar('container-nova-enquete')">Criar Nova Enquete</button>
+    </div>
+
+    <div id="container-nova-enquete" class="container-centralizado">
+        <div class="container-fundo"></div>
+        <div id="nova-enquete">
+            <h2>Nova Enquete</h2>
+            <div id="form-nova-enquete">
+                <table>
+                    <tr>
+                        <td>Título:</td>
+                        <td colspan="2"><input type="text" name="novo-titulo" id="novo-titulo"></td>
+                    </tr>
+                    <tr>
+                        <td>Opções</td>
+                        <td><input type="text" id="nova-opcao" name="novo-opcao" placeholder="Digite a opção"></td>
+                        <td><button id="btn-adicionar-opcao" onclick="adicionarOpcao()">Adicionar Opção</button></td>
+                    </tr>
+                </table>
+                <ul id="lista-opcoes">
+                </ul>
+                <div class="lista-botoes">
+                    <button id="fechar-nova-enquete">Fechar</button>
+                    <button type="submit" onclick="criarEnquete(event)">Criar Enquete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="container-enquete-selecionada" class="container-centralizado">
+        
+        <div class="container-fundo"></div>
+        <div id="enquete-selecionada">
+            <div id="enquete-selecionada-container">
+                <h2 id="titulo-enquete-selecionada">Enquete Selecionada</h2>
+                <p id="dt-inicio">Inicio: </p>
+                <p id="dt-fim">Fim: </p>
+                <p>Respostas: </p>
+                <div>
+                    <div id="opcoes-selecionada"></div>
+                    <div class="lista-botoes">
+                        <button id="fechar-enquete-selecionada">Fechar</button>
+                        <button type="submit" onclick="votar(event)">Votar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./front.js"></script>
 </body>
 </html>
