@@ -1,0 +1,14 @@
+20220524	16:44:10	74116a25-b2ab-40a7-a62a-e161e5d5cf68	TypeError: Cannot read properties of undefined (reading 'find')
+20220524	16:44:29	37d5ae79-6b60-4656-b4a1-10ae2cb0a860	TypeError: Cannot read properties of undefined (reading 'find')
+20220524	17:01:44	7428ed1c-e65f-4a26-9d81-0a10d0838dc3	Error: Cannot set headers after they are sent to the client
+20220524	17:04:25	15d71c89-e62c-4a3f-9003-8bf3cb8a6c46	Error: Cannot set headers after they are sent to the client
+20220524	18:49:09	5cdf57a5-e7f6-4dff-9e4e-8a96f9615627	Error: Cannot set headers after they are sent to the client
+20220524	18:49:51	370c3598-3744-4ba4-b0eb-9a672060224e	Error: Cannot set headers after they are sent to the client
+20220524	18:51:29	b61d4da9-5cd2-4aad-9c04-a1cca4b6cacb	Error: Cannot set headers after they are sent to the client
+20220524	18:51:46	98f1e4c2-49d7-4ec2-b5a4-baedc655f3f2	Error: Cannot set headers after they are sent to the client
+20220524	18:57:25	9ffc0abd-f9b1-497a-a35b-96023947ade7	TypeError: Cannot read properties of undefined (reading 'filter')
+20220524	18:58:50	8f937fcc-a4fd-4f71-97a0-03f203d6db53	TypeError: Cannot read properties of undefined (reading 'filter')
+20220524	19:39:21	b9478e53-7da2-4560-a38b-dcf76aec7643	TypeError: Cannot read properties of undefined (reading 'getAllEnquetes')
+20220524	19:41:00	172d91d1-9b75-4f4a-8df7-36852eaf74c4	TypeError: enquete is not a constructor
+20220524	19:41:58	7fef06cf-8ecb-4717-a767-782dafb2e895	TypeError: enq.getAllEnquetes is not a function
+20220524	19:42:01	e7bf91b1-345e-403e-b2dd-4882f10ff906	TypeError: enq.getAllEnquetes is not a function

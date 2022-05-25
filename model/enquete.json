@@ -1,0 +1,15 @@
+
+[
+    {
+        "id": 1,
+        "titulo": "Presidente",
+        "dt_inicio": "01/01/2019",
+        "dt_fim": "01/06/2022"
+    },
+    {
+        "id": 2,
+        "titulo": "Dave",
+        "dt_inicio": "01/01/2019",
+        "dt_fim": "01/06/2022"
+    }
+]
