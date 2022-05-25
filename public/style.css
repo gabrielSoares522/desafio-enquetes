@@ -1,0 +1,79 @@
+body{
+    background-color: #f9fbfc;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#container{
+    margin: auto;
+    width: 80%;
+}
+.container-centralizado{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.container-fundo{
+    background-color: #535353;
+    opacity: 0.5;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+#btn-nova-enquete{
+    width: 100%;
+}
+#nova-enquete{
+    z-index: 2;
+    width: 600px;
+    min-height: 600px;
+    padding: 40px;
+    background-color: rgb(50, 129, 199);
+    
+}
+
+#novo-titulo{
+    width: 100%;
+}
+
+.lista-botoes{
+    display: flex;
+    justify-content: space-between;
+    
+    align-items: center;
+    margin-top: 20px;
+}
+.lista-botoes button{
+    width: 90%;
+    padding: 10px 0;
+}
+
+#enquete-selecionada{
+    z-index: 2;
+    width: 600px;
+    min-height: 600px;
+    padding: 40px;
+    background-color: rgb(199, 50, 50);
+}
+
+.card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.item-opcao{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+.item-opcao p{
+    margin: 0 5px;
+}
