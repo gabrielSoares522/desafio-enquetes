@@ -82,11 +82,24 @@ const getOpcaoByEnquete = async(req, res) => {
     res.json(opcoes);
     
 }
+
+const registerVote = async(req, res) => {
+    const opcao = new Opcao();
+    await opcao.findById(req.body.idOpcao);
+    opcao.qt_votos++;
+    try{
+        const result = await opcao.update();
+        res.json(result);
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
 module.exports = {
     getAllOpcoes,
     createOpcao,
     updateOpcao,
     deleteOpcao,
     getOpcao,
-    getOpcaoByEnquete
+    getOpcaoByEnquete,
+    registerVote
 }

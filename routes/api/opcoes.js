@@ -13,5 +13,8 @@ router.route("/:id")
 
 router.route("/byEnquete/:id")
     .get(opcoesController.getOpcaoByEnquete)
+
+router.route("/votar/")
+    .post(opcoesController.registerVote)
     
 module.exports = router;

@@ -1,4 +1,5 @@
 const {Enquete} = require("../model/enquete.js");
+const { Opcao } = require("../model/opcao.js");
 
 const getAllEnquetes = async(req, res) => {
     const enquete = new Enquete();
@@ -16,16 +17,29 @@ const createEnquete = async(req, res) => {
     newEnquete.titulo = req.body.titulo;
     newEnquete.dt_inicio = req.body.dt_inicio;
     newEnquete.dt_fim = req.body.dt_fim;
-
+    
     if(!newEnquete.titulo || !newEnquete.dt_inicio || !newEnquete.dt_fim) {
         res.status(400).json({"message": "Preencha todos os campos"});
     }
     try{
         await newEnquete.save();
-        res.status(201).json(newEnquete);
     } catch(err){
         res.status(500).json(err);
     }
+    const opcoes = req.body.opcoes.map(opcao => {
+        const newOpcao = new Opcao();
+        newOpcao.id_enquete = newEnquete.id;
+        newOpcao.resposta = opcao;
+        return newOpcao});
+
+    try{
+        opcoes.forEach(async opcao => {
+            await opcao.save();
+        });
+    } catch(err){
+        res.status(500).json(err);
+    }
+    res.status(201).json(newEnquete);
 }
 
 const updateEnquete = async(req, res) => {

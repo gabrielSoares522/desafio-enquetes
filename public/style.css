@@ -36,11 +36,15 @@ body{
     min-height: 600px;
     padding: 40px;
     background-color: rgb(50, 129, 199);
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #novo-titulo{
-    width: 100%;
+    width: 97%;
+    padding: 1px 1%;
+    margin: 0;
 }
 
 .lista-botoes{

@@ -27,6 +27,14 @@
                         <td colspan="2"><input type="text" name="novo-titulo" id="novo-titulo"></td>
                     </tr>
                     <tr>
+                        <td>Inicio:</td>
+                        <td><input type="datetime-local" name="novo-inicio" id="novo-inicio"></td>
+                    </tr>
+                    <tr>
+                        <td>Fim:</td>
+                        <td><input type="datetime-local" name="novo-fim" id="novo-fim"></td>
+                    </tr>
+                    <tr>
                         <td>Opções</td>
                         <td><input type="text" id="nova-opcao" name="novo-opcao" placeholder="Digite a opção"></td>
                         <td><button id="btn-adicionar-opcao" onclick="adicionarOpcao()">Adicionar Opção</button></td>
@@ -36,14 +44,13 @@
                 </ul>
                 <div class="lista-botoes">
                     <button id="fechar-nova-enquete">Fechar</button>
-                    <button type="submit" onclick="criarEnquete(event)">Criar Enquete</button>
+                    <button onclick="criarEnquete()">Criar Enquete</button>
                 </div>
             </div>
         </div>
     </div>
     
     <div id="container-enquete-selecionada" class="container-centralizado">
-        
         <div class="container-fundo"></div>
         <div id="enquete-selecionada">
             <div id="enquete-selecionada-container">
@@ -55,7 +62,7 @@
                     <div id="opcoes-selecionada"></div>
                     <div class="lista-botoes">
                         <button id="fechar-enquete-selecionada">Fechar</button>
-                        <button type="submit" onclick="votar(event)">Votar</button>
+                        <button onclick="votar()">Votar</button>
                     </div>
                 </div>
             </div>
