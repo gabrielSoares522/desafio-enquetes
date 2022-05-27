@@ -1,11 +1,5 @@
 var mysql = require('mysql');
-const databaseConfig = {
-    host: "localhost",
-    user: "root",
-    password: "1234",
-    database: "enqueteDB",
-    port: 3306
-};
+const {databaseConfig} = require('../config/databaseConfig');
 
 var pool = mysql.createPool(databaseConfig);
 
