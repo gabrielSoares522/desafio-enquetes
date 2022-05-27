@@ -16,8 +16,10 @@ class Enquete {
 
     async save(){
         let result = "";
+        let sql = "INSERT INTO enquete (titulo, dt_inicio, dt_fim)";
+        sql+="VALUES (?, CONVERT_TZ(?,'+00:00','-03:00'), CONVERT_TZ(?,'+00:00','-03:00'))";
         try{ 
-            result = await mysql.executeQuery("INSERT INTO enquete (titulo, dt_inicio, dt_fim) VALUES (?, ?, ?)", [this.titulo, this.dt_inicio, this.dt_fim])
+            result = await mysql.executeQuery(sql, [this.titulo, this.dt_inicio, this.dt_fim])
         } catch(err){
             console.log("Erro ao salvar enquete: " + err);
             throw err;

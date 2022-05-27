@@ -71,6 +71,11 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px;
+    margin: 15px 0;
+}
+.card > div *{
+    margin: 0;
 }
 .item-opcao{
     display: flex;

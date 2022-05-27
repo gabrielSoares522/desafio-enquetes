@@ -1,4 +1,5 @@
 const {Opcao} = require("../model/opcao.js");
+const {Enquete} = require("../model/enquete.js");
 
 const getAllOpcoes = async(req, res) => {
     const opcao = new Opcao();
@@ -84,8 +85,39 @@ const getOpcaoByEnquete = async(req, res) => {
 }
 
 const registerVote = async(req, res) => {
+    
     const opcao = new Opcao();
+
     await opcao.findById(req.body.idOpcao);
+
+    if (opcao.id == null) {
+        return res.status(400).json({ "message": `opcao ID ${req.body.idOpcao} not found` });
+    }
+
+    const enquete = new Enquete();
+
+    await enquete.findById(opcao.id_enquete);
+
+    const dt_atual = new Date();
+    let dt_inicio = new Date(enquete.dt_inicio);
+    let dt_fim = new Date(enquete.dt_fim);
+    /*
+    console.log(enquete.dt_inicio);
+    let [data_inicio,hora_inicio] = enquete.dt_inicio.split(/[T]/);
+    console.log(data_inicio,hora_inicio);
+    data_inicio = data_inicio.split('-');
+    hora_inicio = hora_inicio.split(':');
+    dt_inicio = new Date(data_inicio[0], data_inicio[1]-1, data_inicio[2], hora_inicio[0], hora_inicio[1], 0);
+    
+    let [data_fim,hora_fim] = enquete.dt_fim.split(/[T]/);
+    data_fim = data_fim.split('-');
+    hora_fim = hora_fim.split(':');
+    let dt_fim = new Date(data_fim[0], data_fim[1]-1, data_fim[2], hora_fim[0], hora_fim[1], 0);*/
+
+    if(dt_atual < dt_inicio || dt_atual > dt_fim){
+        return res.status(400).json({ "message": `Enquete com ID ${enquete.id} não está aberta` });
+    }
+    
     opcao.qt_votos++;
     try{
         const result = await opcao.update();

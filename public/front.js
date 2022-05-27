@@ -1,14 +1,30 @@
-//const { default: axios } = require("axios");
-
 let btn_fechar_nova_enquete = document.getElementById("fechar-nova-enquete");
 let btn_fechar_enquete_selecionada = document.getElementById("fechar-enquete-selecionada");
+let enquete_selecionada_id = null;
+
+const cor_anterior = '#ffd6a1';
+const cor_atual = '#a1ffba';
+const cor_fechada = '#5c53fc';
 
 axios.get('/enquetes/')
-  .then(function (response) {
-    let enquetes = response.data
-    console.log(enquetes);
-    enquetes.forEach(renderEnquete);
-})
+    .then(function (response) {
+        let enquetes = response.data
+        console.log(enquetes);
+        enquetes.forEach(renderEnquete);
+    })
+
+setInterval(function () {
+    if(enquete_selecionada_id != null){
+        axios.get('/opcoes/byEnquete/'+enquete_selecionada_id)
+            .then(function (response) {
+                let opcoes = response.data;
+                let radio_opcoes = document.getElementById("opcoes-selecionada").getElementsByTagName("label");
+                for(let i = 0; i < radio_opcoes.length; i++){
+                    radio_opcoes[i].children[1].innerHTML = opcoes[i].qt_votos;
+                }
+            })
+    }
+}, 1000);
 
 function renderOpcao(opcao){
     let label = document.createElement('label');
@@ -32,11 +48,26 @@ function renderOpcao(opcao){
 
 function renderEnquete(enquete){
     let card = document.createElement('div');
-    card.className = 'card';
+    let div_titulo = document.createElement('div');
     let title = document.createElement('h3');
-    title.className = 'card-title';
-    title.innerHTML = enquete.titulo;
+    let datas = document.createElement('p');
     let button = document.createElement('button');
+
+    card.classList.add('card');
+
+    title.classList.add('card-title');
+    title.innerHTML = enquete.titulo;
+    
+    enquete.dt_inicio = converterData(enquete.dt_inicio);
+    enquete.dt_fim = converterData(enquete.dt_fim);
+    
+    datas.innerHTML = "Início: " + enquete.dt_inicio.toLocaleDateString() + " " + enquete.dt_inicio.toLocaleTimeString();
+    datas.innerHTML += " - Fim: " + enquete.dt_fim.toLocaleDateString() + " " + enquete.dt_fim.toLocaleTimeString();
+
+    verificarPrazo(enquete.dt_inicio, enquete.dt_fim, function(cor){
+        card.style.backgroundColor = cor;
+    });
+
     button.className = 'btn btn-primary';
     button.innerHTML = 'Responder';
     button.onclick = function() {
@@ -44,7 +75,9 @@ function renderEnquete(enquete){
         mostrar("container-enquete-selecionada");
     }.bind(enquete)
 
-    card.appendChild(title);
+    div_titulo.appendChild(title);
+    div_titulo.appendChild(datas);
+    card.appendChild(div_titulo);
     card.appendChild(button);
     document.getElementById("lista-enquetes").appendChild(card);
 }
@@ -57,13 +90,13 @@ function fechar(containerId){
     document.getElementById(containerId).style.display = "none";
 }
 
-function criarEnquete(event){
-    event.preventDefault()
+function criarEnquete(){
     let titulo = document.getElementById("novo-titulo").value;
     let dt_inicio = document.getElementById("novo-inicio").value;
     let dt_fim = document.getElementById("novo-fim").value;
     let opcoes = document.getElementById("lista-opcoes").getElementsByClassName("item-opcao");
     let opcoes_nova_enquete = [];
+
     if(titulo == "" || dt_inicio == "" || dt_fim == "" || opcoes.length == 0){
         alert("Preencha todos os campos!");
         return;
@@ -85,7 +118,7 @@ function criarEnquete(event){
         opcoes: opcoes_nova_enquete
     })
     .then(function (response) {
-        console.log(response);
+        console.log(response.data);
         renderEnquete(response.data);
     })
     .catch(function (error) {
@@ -113,38 +146,81 @@ function votar(){
     opcao_selecionada.checked = false;
 }
 
+function converterData(dataString){
+    let [data,hora] = dataString.split(/[T]/);
+    data = data.split('-');
+    hora = hora.split(':');
+    let novoFormato = new Date(data[0], data[1]-1, data[2], hora[0], hora[1], 0);
+    
+    return novoFormato;
+}
+
+function verificarPrazo(inicio,fim,callback){
+    let dataAtual = new Date();
+    let cor;
+    if(dataAtual.getTime() < inicio.getTime()){
+        cor = cor_anterior;
+    } else{
+        if(dataAtual.getTime() < fim.getTime()){
+            cor = cor_atual;
+        } else{
+            cor = cor_fechada;
+        }
+    }
+    callback(cor);
+}
+
 function selecionarEnquete(enquete){
-    var [dt_inicio,ti_inicio] = enquete.dt_inicio.split(/[T]/);
-    dt_inicio = dt_inicio.split('-').reverse().join('/');
-    ti_inicio = ti_inicio.split(':');
+    enquete_selecionada_id = enquete.id;
 
-    var [dt_fim,ti_fim] = enquete.dt_fim.split(/[T]/);
-    dt_fim = dt_fim.split('-').reverse().join('/');
-    ti_fim = ti_fim.split(':');
-
+    let opcoes_selecionadas = document.getElementById("opcoes-selecionada");
     document.getElementById("titulo-enquete-selecionada").innerHTML = enquete.titulo;
-    document.getElementById("dt-inicio").innerHTML = "inicio: " + dt_inicio + " " + ti_inicio[0] + ":" + ti_inicio[1];
-    document.getElementById("dt-fim").innerHTML = "fim: " + dt_fim + " " + ti_fim[0] + ":" + ti_fim[1];
-    document.getElementById("opcoes-selecionada").innerHTML = "";
+    document.getElementById("dt-inicio").innerHTML = "Início: " + enquete.dt_inicio.toLocaleDateString() + " " + enquete.dt_inicio.toLocaleTimeString();
+    document.getElementById("dt-fim").innerHTML = "Fim: " + enquete.dt_fim.toLocaleDateString() + " " + enquete.dt_fim.toLocaleTimeString();
+    opcoes_selecionadas.innerHTML = "";
+    
     axios.get('/opcoes/byEnquete/'+enquete.id)
         .then(function (response) {
             console.log(response.data);
             let opcoes = response.data;
             opcoes.forEach(renderOpcao);
         })
-}
-btn_fechar_nova_enquete.addEventListener("click",
-function (event) {
     
-    event.preventDefault();
-    fechar("container-nova-enquete");
-});
+    verificarPrazo(enquete.dt_inicio, enquete.dt_fim, function(cor){
+        document.getElementById("enquete-selecionada").style.backgroundColor = cor;
+        let lista_radio = document.getElementsByName('opcao-selecionada');
+        console.log(lista_radio);
+        if(cor == cor_fechada || cor == cor_anterior){
+            document.getElementById("btn-votar").disabled  = true;
+            for(let i = 0; i < lista_radio.length; i++){
+                lista_radio[i].disabled = true;
+            }
+            /*lista_radio.forEach((radio) =>{
+                radio.disabled = true;
+            });*/
+        }else{
+            document.getElementById("btn-votar").disabled  = false;
+            for(let i = 0; i < lista_radio.length; i++){
+                lista_radio[i].disabled = false;
+            }
+            /*lista_radio.forEach((radio)=> {
+                radio.disabled = false;
+            })*/
+        }
+        
+    });
+}
+
+btn_fechar_nova_enquete.addEventListener("click",
+    function () {
+        fechar("container-nova-enquete");
+    });
 
 btn_fechar_enquete_selecionada.addEventListener("click",
-function (event) {
-    event.preventDefault();
-    fechar("container-enquete-selecionada");
-});
+    function () {
+        enquete_selecionada_id = null;
+        fechar("container-enquete-selecionada");
+    });
 
 function adicionarOpcao(){
     let opcao = document.getElementById("nova-opcao").value;
