@@ -34,6 +34,7 @@ function renderOpcao(opcao){
     input.type = 'radio';
     input.id = 'ops'+opcao.id;
     input.name = 'opcao-selecionada';
+    input.classList.add('opcao-selecionada');
     input.value = opcao.id;
 
     span.classList.add('qt-votos');
@@ -90,7 +91,7 @@ function fechar(containerId){
     document.getElementById(containerId).style.display = "none";
 }
 
-function criarEnquete(){
+async function criarEnquete(){
     let titulo = document.getElementById("novo-titulo").value;
     let dt_inicio = document.getElementById("novo-inicio").value;
     let dt_fim = document.getElementById("novo-fim").value;
@@ -111,7 +112,7 @@ function criarEnquete(){
         opcoes_nova_enquete.push(opcoes[i].children[0].innerHTML);
     }
 
-    axios.post('/enquetes/', {
+    await axios.post('/enquetes/', {
         titulo: titulo,
         dt_inicio: dt_inicio,
         dt_fim: dt_fim,
@@ -170,7 +171,7 @@ function verificarPrazo(inicio,fim,callback){
     callback(cor);
 }
 
-function selecionarEnquete(enquete){
+async function selecionarEnquete(enquete){
     enquete_selecionada_id = enquete.id;
 
     let opcoes_selecionadas = document.getElementById("opcoes-selecionada");
@@ -179,7 +180,7 @@ function selecionarEnquete(enquete){
     document.getElementById("dt-fim").innerHTML = "Fim: " + enquete.dt_fim.toLocaleDateString() + " " + enquete.dt_fim.toLocaleTimeString();
     opcoes_selecionadas.innerHTML = "";
     
-    axios.get('/opcoes/byEnquete/'+enquete.id)
+    await axios.get('/opcoes/byEnquete/'+enquete.id)
         .then(function (response) {
             console.log(response.data);
             let opcoes = response.data;
@@ -188,24 +189,17 @@ function selecionarEnquete(enquete){
     
     verificarPrazo(enquete.dt_inicio, enquete.dt_fim, function(cor){
         document.getElementById("enquete-selecionada").style.backgroundColor = cor;
-        let lista_radio = document.getElementsByName('opcao-selecionada');
-        console.log(lista_radio);
+        
+        let lista_radio = document.getElementById('opcoes-selecionada').getElementsByClassName('opcao-selecionada');
+        let btn_votar = document.getElementById("btn-votar");
+        console.log(lista_radio)
         if(cor == cor_fechada || cor == cor_anterior){
-            document.getElementById("btn-votar").disabled  = true;
+            btn_votar.disabled  = true;
             for(let i = 0; i < lista_radio.length; i++){
                 lista_radio[i].disabled = true;
             }
-            /*lista_radio.forEach((radio) =>{
-                radio.disabled = true;
-            });*/
         }else{
-            document.getElementById("btn-votar").disabled  = false;
-            for(let i = 0; i < lista_radio.length; i++){
-                lista_radio[i].disabled = false;
-            }
-            /*lista_radio.forEach((radio)=> {
-                radio.disabled = false;
-            })*/
+            btn_votar.disabled  = false;
         }
         
     });
