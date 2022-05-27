@@ -28,7 +28,7 @@ npm install
 const databaseConfig = {
     host: "localhost",
     user: "root",
-    password: "1234",
+    password: "",
     database: "enqueteDB",
     port: 3306
 };
