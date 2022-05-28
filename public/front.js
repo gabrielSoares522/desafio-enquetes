@@ -6,8 +6,7 @@ const cor_anterior = '#ffd6a1';
 const cor_atual = '#a1ffba';
 const cor_fechada = '#5c53fc';
 
-axios.get('/enquetes/')
-    .then(function (response) {
+axios.get('/enquetes/').then(function (response) {
         let enquetes = response.data
         console.log(enquetes);
         enquetes.forEach(renderEnquete);
@@ -53,23 +52,31 @@ function renderEnquete(enquete){
     let title = document.createElement('h3');
     let datas = document.createElement('p');
     let button = document.createElement('button');
+    let span_inicio = document.createElement('span');
+    let span_fim = document.createElement('span');
 
     card.classList.add('card');
 
-    title.classList.add('card-title');
+    title.classList.add('card-titulo');
     title.innerHTML = enquete.titulo;
     
     enquete.dt_inicio = converterData(enquete.dt_inicio);
     enquete.dt_fim = converterData(enquete.dt_fim);
     
-    datas.innerHTML = "Início: " + enquete.dt_inicio.toLocaleDateString() + " " + enquete.dt_inicio.toLocaleTimeString();
-    datas.innerHTML += " - Fim: " + enquete.dt_fim.toLocaleDateString() + " " + enquete.dt_fim.toLocaleTimeString();
+    span_inicio.innerHTML = "Início: " + enquete.dt_inicio.toLocaleDateString() + " " + enquete.dt_inicio.toLocaleTimeString()+" ";
+    span_fim.innerHTML = "Fim: " + enquete.dt_fim.toLocaleDateString() + " " + enquete.dt_fim.toLocaleTimeString();
+
+    span_inicio.classList.add('card-inicio');
+    span_fim.classList.add('card-fim');
+
+    datas.appendChild(span_inicio);
+    datas.appendChild(span_fim);
 
     verificarPrazo(enquete.dt_inicio, enquete.dt_fim, function(cor){
         card.style.backgroundColor = cor;
     });
 
-    button.className = 'btn btn-primary';
+    button.className = 'btn-responder';
     button.innerHTML = 'Responder';
     button.onclick = function() {
         selecionarEnquete(this);
@@ -185,7 +192,7 @@ async function selecionarEnquete(enquete){
             console.log(response.data);
             let opcoes = response.data;
             opcoes.forEach(renderOpcao);
-        })
+        });
     
     verificarPrazo(enquete.dt_inicio, enquete.dt_fim, function(cor){
         document.getElementById("enquete-selecionada").style.backgroundColor = cor;
@@ -201,7 +208,6 @@ async function selecionarEnquete(enquete){
         }else{
             btn_votar.disabled  = false;
         }
-        
     });
 }
 
