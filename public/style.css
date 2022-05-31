@@ -94,7 +94,12 @@ body{
     width: 90%;
     padding: 10px 0;
 }
-
+.opcao-selecionada{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 #enquete-selecionada{
     z-index: 2;
     width: 600px;
@@ -102,12 +107,10 @@ body{
     padding: 40px;
     background-color: rgb(199, 50, 50);
 }
-.qt-votos{
+.votos{
     margin-left: 20px;
-    background-color: #d85167;
+    background-color: #d85158;
     padding: 0px 5px;
-    width: 10px;
-    height: 10px;
     border-radius: 10px;
 }
 
@@ -157,12 +160,5 @@ body{
         font-size: 12px;
         display: flex;
         flex-direction: column;
-    }
-
-    .card-inicio{
-
-    }
-    .card-fim{
-
     }
 }

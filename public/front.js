@@ -27,21 +27,30 @@ setInterval(function () {
 
 function renderOpcao(opcao){
     let label = document.createElement('label');
+    let div_radio = document.createElement('div');
+    let div_votos = document.createElement('div');
+
     let input = document.createElement('input');
     let span = document.createElement('span');
     
     input.type = 'radio';
     input.id = 'ops'+opcao.id;
     input.name = 'opcao-selecionada';
-    input.classList.add('opcao-selecionada');
     input.value = opcao.id;
 
     span.classList.add('qt-votos');
     span.innerHTML = opcao.qt_votos;
 
-    label.appendChild(input);
-    label.innerHTML += opcao.resposta + " ";
-    label.appendChild(span);
+    div_radio.appendChild(input);
+    div_radio.innerHTML += opcao.resposta;
+    
+    div_votos.classList.add('votos');
+    div_votos.appendChild(span);
+
+    label.classList.add('opcao-selecionada');
+    label.appendChild(div_radio);
+    label.appendChild(div_votos);
+
     document.getElementById("opcoes-selecionada").appendChild(label);
     document.getElementById("opcoes-selecionada").appendChild(document.createElement('br'));
 }
@@ -197,7 +206,7 @@ async function selecionarEnquete(enquete){
     verificarPrazo(enquete.dt_inicio, enquete.dt_fim, function(cor){
         document.getElementById("enquete-selecionada").style.backgroundColor = cor;
         
-        let lista_radio = document.getElementById('opcoes-selecionada').getElementsByClassName('opcao-selecionada');
+        let lista_radio = document.querySelectorAll('input[name="opcao-selecionada"]');
         let btn_votar = document.getElementById("btn-votar");
         console.log(lista_radio)
         if(cor == cor_fechada || cor == cor_anterior){
